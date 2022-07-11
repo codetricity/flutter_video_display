@@ -90,7 +90,11 @@ class _ButterFlyAssetVideoInList extends StatelessWidget {
                       const FractionalOffset(-0.1, -0.1),
                   children: <Widget>[
                     _ButterFlyAssetVideo(),
-                    Image.asset('assets/flutter-mark-square-64.png'),
+                    SizedBox(
+                        child: Image.asset(
+                      'assets/oppkey.jpeg',
+                      width: 60,
+                    )),
                   ]),
             ],
           ),
@@ -154,7 +158,7 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset('assets/ageda.MP4');
+    _controller = VideoPlayerController.asset('assets/coffee.MP4');
 
     _controller.addListener(() {
       setState(() {});
@@ -178,7 +182,7 @@ class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
           Container(
             padding: const EdgeInsets.only(top: 20.0),
           ),
-          const Text('With assets mp4'),
+          const Text('Coffee Video'),
           Container(
             padding: const EdgeInsets.all(20),
             child: AspectRatio(
@@ -209,7 +213,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
 
   Future<ClosedCaptionFile> _loadCaptions() async {
     final String fileContents = await DefaultAssetBundle.of(context)
-        .loadString('assets/bumble_bee_captions.vtt');
+        .loadString('assets/office_captions.vtt');
     return WebVTTCaptionFile(
         fileContents); // For vtt files, use WebVTTCaptionFile
   }
@@ -218,7 +222,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
-      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
+      'https://codetricity.github.io/flutter_video_display/ageda.MP4',
       closedCaptionFile: _loadCaptions(),
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
@@ -242,7 +246,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
       child: Column(
         children: <Widget>[
           Container(padding: const EdgeInsets.only(top: 20.0)),
-          const Text('With remote mp4'),
+          const Text('Office Video'),
           Container(
             padding: const EdgeInsets.all(20),
             child: AspectRatio(
