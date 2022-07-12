@@ -62,8 +62,6 @@ The application uses the [video_360](https://pub.dev/packages/video_360) package
 
 ## Problems
 * Currently, List View crashes when adding multiple videos
-* Project crashes if video360 version is not changed in `pubspec.yaml`.
-<img src="docs/notice.png" width=50%>
 * When adding video360 to the project, received this error: `Cannot fit requested classes in a single dex file`. To solve the error, add `androidx.multidex:multidex:2.0.1 ` to the `build.gradle` file. Also, add `multiDexEnabled true`. 
 
 ```dart
