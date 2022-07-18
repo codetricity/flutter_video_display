@@ -214,7 +214,11 @@ class _AssetVideoState extends State<AssetVideo> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset(file);
+    _controller = VideoPlayerController.network(
+      'https://codetricity.github.io/flutter_video_display/coffee.MP4',
+      closedCaptionFile: _loadCaptions(),
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
 
     _controller.addListener(() {
       setState(() {});
