@@ -27,6 +27,32 @@ void initState() {
     );
 ```
 
+## Other Storage Options
+
+### Google Firebase Storage
+
+This is an example of Firebase Storage. 
+
+```dart
+_controller = VideoPlayerController.network(
+      'https://firebasestorage.googleapis.com/v0/b/oppkeytheta.appspot.com/o/R0010926.MP4?alt=media',
+      closedCaptionFile: _loadCaptions(),
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
+```
+
+The Firebase rules have to allow global access.
+
+```text
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+    allow read: if true;
+    }
+  }
+}
+```
+
 ## Asset Video
 
 This example also gets video from the assets/ folder. Here is a part of a code for displaying the local video.

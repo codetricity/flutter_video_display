@@ -75,6 +75,19 @@ class _AssetVideoInList extends StatelessWidget {
   }
 }
 
+// class ThumbnailCard extends StatelessWidget {
+//   const ThumbnailCard({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       child: Column(children: [
+//         Image.
+//       ]),
+//     );
+//   }
+// }
+
 class AssetCard extends StatelessWidget {
   const AssetCard({
     Key? key,
@@ -134,7 +147,8 @@ class _OfficeRemoteVideoState extends State<_OfficeRemoteVideo> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
-      'https://codetricity.github.io/flutter_video_display/ageda.MP4',
+      // 'https://codetricity.github.io/flutter_video_display/ageda.MP4',
+      'https://firebasestorage.googleapis.com/v0/b/oppkeytheta.appspot.com/o/R0010926.MP4?alt=media',
       closedCaptionFile: _loadCaptions(),
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
