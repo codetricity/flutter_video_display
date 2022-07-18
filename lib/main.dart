@@ -1,3 +1,4 @@
+// ignore_for_file:  sort_constructors_first
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -9,6 +10,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'videos/view_360.dart';
+import 'package:video_360/video_360.dart';
 
 void main() {
   runApp(
@@ -22,25 +25,13 @@ class _App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
+      // length: 4,
       child: Scaffold(
         key: const ValueKey<String>('home_page'),
         appBar: AppBar(
           title: const Text('Video player example'),
-          actions: <Widget>[
-            IconButton(
-              key: const ValueKey<String>('push_tab'),
-              icon: const Icon(Icons.navigation),
-              onPressed: () {
-                Navigator.push<_PlayerVideoAndPopPage>(
-                  context,
-                  MaterialPageRoute<_PlayerVideoAndPopPage>(
-                    builder: (BuildContext context) => _PlayerVideoAndPopPage(),
-                  ),
-                );
-              },
-            )
-          ],
+          actions: <Widget>[],
           bottom: const TabBar(
             isScrollable: true,
             tabs: <Widget>[
@@ -50,14 +41,21 @@ class _App extends StatelessWidget {
               ),
               Tab(icon: Icon(Icons.insert_drive_file), text: 'Asset'),
               Tab(icon: Icon(Icons.list), text: 'List example'),
+              Tab(
+                text: '360 View',
+              )
             ],
           ),
         ),
         body: TabBarView(
           children: <Widget>[
-            _BumbleBeeRemoteVideo(),
-            _ButterFlyAssetVideo(),
-            _ButterFlyAssetVideoInList(),
+            _OfficeRemoteVideo(),
+            AssetVideo(
+              title: 'Dalgona Coffee',
+              file: 'assets/coffee.MP4',
+            ),
+            _AssetVideoInList(),
+            NavigatorButton()
           ],
         ),
       ),
@@ -65,151 +63,82 @@ class _App extends StatelessWidget {
   }
 }
 
-class _ButterFlyAssetVideoInList extends StatelessWidget {
+class _AssetVideoInList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        const _ExampleCard(title: 'Item a'),
-        const _ExampleCard(title: 'Item b'),
-        const _ExampleCard(title: 'Item c'),
-        const _ExampleCard(title: 'Item d'),
-        const _ExampleCard(title: 'Item e'),
-        const _ExampleCard(title: 'Item f'),
-        const _ExampleCard(title: 'Item g'),
-        Card(
-            child: Column(children: <Widget>[
-          Column(
-            children: <Widget>[
-              const ListTile(
-                leading: Icon(Icons.cake),
-                title: Text('Video video'),
-              ),
-              Stack(
-                  alignment: FractionalOffset.bottomRight +
-                      const FractionalOffset(-0.1, -0.1),
-                  children: <Widget>[
-                    _ButterFlyAssetVideo(),
-                    Image.asset('assets/flutter-mark-square-64.png'),
-                  ]),
-            ],
-          ),
-        ])),
-        const _ExampleCard(title: 'Item h'),
-        const _ExampleCard(title: 'Item i'),
-        const _ExampleCard(title: 'Item j'),
-        const _ExampleCard(title: 'Item k'),
-        const _ExampleCard(title: 'Item l'),
-      ],
-    );
+    return ListView(children: <Widget>[
+      AssetCard(
+        title: 'Dalgona Coffee',
+        file: 'assets/coffee.MP4',
+      ),
+    ]);
   }
 }
 
-/// A filler card to show the video in a list of scrolling contents.
-class _ExampleCard extends StatelessWidget {
-  const _ExampleCard({Key? key, required this.title}) : super(key: key);
+// class ThumbnailCard extends StatelessWidget {
+//   const ThumbnailCard({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       child: Column(children: [
+//         Image.
+//       ]),
+//     );
+//   }
+// }
+
+class AssetCard extends StatelessWidget {
+  const AssetCard({
+    Key? key,
+    required this.title,
+    required this.file,
+  }) : super(key: key);
 
   final String title;
+  final String file;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+        child: Column(children: <Widget>[
+      Column(
         children: <Widget>[
-          ListTile(
-            leading: const Icon(Icons.airline_seat_flat_angled),
-            title: Text(title),
+          const ListTile(
+            leading: Icon(Icons.video_camera_front),
+            title: Text('Asset video'),
           ),
-          ButtonBar(
-            children: <Widget>[
-              TextButton(
-                child: const Text('BUY TICKETS'),
-                onPressed: () {
-                  /* ... */
-                },
-              ),
-              TextButton(
-                child: const Text('SELL TICKETS'),
-                onPressed: () {
-                  /* ... */
-                },
-              ),
-            ],
-          ),
+          Stack(
+              alignment: FractionalOffset.bottomRight +
+                  const FractionalOffset(-0.1, -0.1),
+              children: <Widget>[
+                AssetVideo(
+                  title: title,
+                  file: file,
+                ),
+                SizedBox(
+                    child: Image.asset(
+                  'assets/oppkey.jpeg',
+                  width: 60,
+                )),
+              ]),
         ],
       ),
-    );
+    ]));
   }
 }
 
-class _ButterFlyAssetVideo extends StatefulWidget {
+class _OfficeRemoteVideo extends StatefulWidget {
   @override
-  _ButterFlyAssetVideoState createState() => _ButterFlyAssetVideoState();
+  _OfficeRemoteVideoState createState() => _OfficeRemoteVideoState();
 }
 
-class _ButterFlyAssetVideoState extends State<_ButterFlyAssetVideo> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.asset('assets/ageda.MP4');
-
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(top: 20.0),
-          ),
-          const Text('With assets mp4'),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: AspectRatio(
-              aspectRatio: _controller.value.aspectRatio,
-              child: Stack(
-                alignment: Alignment.bottomCenter,
-                children: <Widget>[
-                  VideoPlayer(_controller),
-                  _ControlsOverlay(controller: _controller),
-                  VideoProgressIndicator(_controller, allowScrubbing: true),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _BumbleBeeRemoteVideo extends StatefulWidget {
-  @override
-  _BumbleBeeRemoteVideoState createState() => _BumbleBeeRemoteVideoState();
-}
-
-class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
+class _OfficeRemoteVideoState extends State<_OfficeRemoteVideo> {
   late VideoPlayerController _controller;
 
   Future<ClosedCaptionFile> _loadCaptions() async {
     final String fileContents = await DefaultAssetBundle.of(context)
-        .loadString('assets/bumble_bee_captions.vtt');
+        .loadString('assets/office_captions.vtt');
     return WebVTTCaptionFile(
         fileContents); // For vtt files, use WebVTTCaptionFile
   }
@@ -218,7 +147,8 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
-      'https://codetricity.github.io/flutter_video_display/coffee.MP4',
+      // 'https://codetricity.github.io/flutter_video_display/ageda.MP4',
+      'https://firebasestorage.googleapis.com/v0/b/oppkeytheta.appspot.com/o/R0010926.MP4?alt=media',
       closedCaptionFile: _loadCaptions(),
       videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
     );
@@ -242,7 +172,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
       child: Column(
         children: <Widget>[
           Container(padding: const EdgeInsets.only(top: 20.0)),
-          const Text('With remote mp4'),
+          const Text('Office Video'),
           Container(
             padding: const EdgeInsets.all(20),
             child: AspectRatio(
@@ -252,7 +182,7 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
                 children: <Widget>[
                   VideoPlayer(_controller),
                   ClosedCaption(text: _controller.value.caption.text),
-                  _ControlsOverlay(controller: _controller),
+                  ControlsOverlay(controller: _controller),
                   VideoProgressIndicator(_controller, allowScrubbing: true),
                 ],
               ),
@@ -264,9 +194,77 @@ class _BumbleBeeRemoteVideoState extends State<_BumbleBeeRemoteVideo> {
   }
 }
 
-class _ControlsOverlay extends StatelessWidget {
-  const _ControlsOverlay({Key? key, required this.controller})
-      : super(key: key);
+class AssetVideo extends StatefulWidget {
+  final String title;
+  final String file;
+
+  const AssetVideo({super.key, required this.title, required this.file});
+
+  @override
+  _AssetVideoState createState() => _AssetVideoState(title: title, file: file);
+}
+
+class _AssetVideoState extends State<AssetVideo> {
+  late VideoPlayerController _controller;
+  final String title;
+  final String file;
+
+  _AssetVideoState({required this.title, required this.file});
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(
+      'https://codetricity.github.io/flutter_video_display/coffee.MP4',
+      closedCaptionFile: _loadCaptions(),
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
+
+    _controller.addListener(() {
+      setState(() {});
+    });
+    _controller.setLooping(true);
+    _controller.initialize().then((_) => setState(() {}));
+    _controller.play();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: const EdgeInsets.only(top: 20.0),
+          ),
+          Text(title),
+          Container(
+            padding: const EdgeInsets.all(20),
+            child: AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: Stack(
+                alignment: Alignment.bottomCenter,
+                children: <Widget>[
+                  VideoPlayer(_controller),
+                  ControlsOverlay(controller: _controller),
+                  VideoProgressIndicator(_controller, allowScrubbing: true),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ControlsOverlay extends StatelessWidget {
+  const ControlsOverlay({Key? key, required this.controller}) : super(key: key);
 
   static const List<Duration> _exampleCaptionOffsets = <Duration>[
     Duration(seconds: -10),
@@ -377,63 +375,6 @@ class _ControlsOverlay extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _PlayerVideoAndPopPage extends StatefulWidget {
-  @override
-  _PlayerVideoAndPopPageState createState() => _PlayerVideoAndPopPageState();
-}
-
-class _PlayerVideoAndPopPageState extends State<_PlayerVideoAndPopPage> {
-  late VideoPlayerController _videoPlayerController;
-  bool startedPlaying = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _videoPlayerController = VideoPlayerController.asset('assets/coffee.MP4');
-    _videoPlayerController.addListener(() {
-      if (startedPlaying && !_videoPlayerController.value.isPlaying) {
-        Navigator.pop(context);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _videoPlayerController.dispose();
-    super.dispose();
-  }
-
-  Future<bool> started() async {
-    await _videoPlayerController.initialize();
-    await _videoPlayerController.play();
-    startedPlaying = true;
-    return true;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      elevation: 0,
-      child: Center(
-        child: FutureBuilder<bool>(
-          future: started(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.data ?? false) {
-              return AspectRatio(
-                aspectRatio: _videoPlayerController.value.aspectRatio,
-                child: VideoPlayer(_videoPlayerController),
-              );
-            } else {
-              return const Text('waiting for video to load');
-            }
-          },
-        ),
-      ),
     );
   }
 }
