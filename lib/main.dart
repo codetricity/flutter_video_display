@@ -66,10 +66,18 @@ class _App extends StatelessWidget {
 class _AssetVideoInList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(children: <Widget>[
+    return ListView(children: const <Widget>[
       AssetCard(
         title: 'Dalgona Coffee',
         file: 'assets/coffee.MP4',
+      ),
+      AssetCard(
+        title: 'Oppkey Office Staff',
+        file: 'assets/ageda.MP4',
+      ),
+      AssetCard(
+        title: 'Surfing',
+        file: 'assets/surfing.mp4',
       ),
     ]);
   }
@@ -147,16 +155,20 @@ class _OfficeRemoteVideoState extends State<_OfficeRemoteVideo> {
   void initState() {
     super.initState();
     _controller = VideoPlayerController.network(
+      // GitHub
       // 'https://codetricity.github.io/flutter_video_display/ageda.MP4',
-      'https://firebasestorage.googleapis.com/v0/b/oppkeytheta.appspot.com/o/R0010926.MP4?alt=media',
+      // Firebase Storage
+      // 'https://firebasestorage.googleapis.com/v0/b/oppkeytheta.appspot.com/o/R0010926.MP4?alt=media',
+      // Dropbox
+      'https://www.dropbox.com/s/trsb3v3qvymeyb6/R0010964.MP4?raw=1',
       closedCaptionFile: _loadCaptions(),
-      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: false),
     );
 
     _controller.addListener(() {
       setState(() {});
     });
-    _controller.setLooping(true);
+    _controller.setLooping(false);
     _controller.initialize();
   }
 
@@ -214,16 +226,21 @@ class _AssetVideoState extends State<AssetVideo> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.network(
-      'https://codetricity.github.io/flutter_video_display/coffee.MP4',
-      closedCaptionFile: _loadCaptions(),
-      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    // _controller = VideoPlayerController.network(
+    //   'https://codetricity.github.io/flutter_video_display/coffee.MP4',
+    //   // closedCaptionFile: _loadCaptions(),
+    //   videoPlayerOptions: VideoPlayerOptions(mixWithOthers: false),
+    // );
+    _controller = VideoPlayerController.asset(
+      file,
+      // closedCaptionFile: _loadCaptions(),
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: false),
     );
 
     _controller.addListener(() {
       setState(() {});
     });
-    _controller.setLooping(true);
+    _controller.setLooping(false);
     _controller.initialize().then((_) => setState(() {}));
     _controller.play();
   }
@@ -252,7 +269,7 @@ class _AssetVideoState extends State<AssetVideo> {
                 children: <Widget>[
                   VideoPlayer(_controller),
                   ControlsOverlay(controller: _controller),
-                  VideoProgressIndicator(_controller, allowScrubbing: true),
+                  VideoProgressIndicator(_controller, allowScrubbing: false),
                 ],
               ),
             ),
