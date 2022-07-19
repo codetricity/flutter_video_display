@@ -79,6 +79,14 @@ class _AssetVideoInList extends StatelessWidget {
         title: 'Surfing',
         file: 'assets/surfing.mp4',
       ),
+      AssetCard(
+        title: 'Plant',
+        file: 'assets/plant.mp4',
+      ),
+      AssetCard(
+        title: 'Street',
+        file: 'assets/street.mp4',
+      ),
     ]);
   }
 }
